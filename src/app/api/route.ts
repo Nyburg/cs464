@@ -6,5 +6,18 @@ export async function GET() {
   const files = await fs.readdir(dataDir)
   const jsonFiles = files.filter((file) => file.endsWith('.json'))
 
-  return Response.json({ files: jsonFiles })
+  const allData = await Promise.all(
+    jsonFiles.map(async (file) => {
+      const filePath = path.join(dataDir, file)
+      const contents = await fs.readFile(filePath, 'utf8')
+      const parsed = JSON.parse(contents)
+
+      return {
+        fileName: file,
+        data: parsed,
+      }
+    })
+  )
+
+  return Response.json({ data: allData })
 }
