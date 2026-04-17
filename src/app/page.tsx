@@ -1,10 +1,11 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
-  Box, Typography, Card, CardContent, Stack,
+  Box, Typography, Card, CardContent,
   Select, MenuItem, FormControl, InputLabel
 } from '@mui/material';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
+import { Reorder } from 'motion/react';
 
 // sample data
 import birds from '../../data/bird_population.json';
@@ -41,16 +42,28 @@ export default function Home() {
       </Typography>
 
       {/* Item cards */}
-      <Stack spacing={1}>
-        {items.map((item, index) => (
-          <Card key={`${index}-${item.name}`} variant="outlined">
-            <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2, py: '12px !important' }}>
-              <DragHandleIcon color="action" />
-              <Typography variant="body1">{item.name}</Typography>
-            </CardContent>
-          </Card>
+      <Reorder.Group
+        as="div"
+        values={shuffledItems}
+        onReorder={setShuffledItems}
+        style={{ display: 'flex', flexDirection: 'column', gap: 8 }}
+      >
+        {shuffledItems.map((item) => (
+          <Reorder.Item
+            key={item.name}
+            value={item}
+            as="div"
+            style={{ position: 'relative' }}
+          >
+            <Card variant="outlined">
+              <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2, py: '12px !important' }}>
+                <DragHandleIcon color="action" />
+                <Typography variant="body1">{item.name}</Typography>
+              </CardContent>
+            </Card>
+          </Reorder.Item>
         ))}
-      </Stack>
+      </Reorder.Group>
     </Box>
   );
 };

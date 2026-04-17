@@ -25,6 +25,7 @@
     "next": "^16.2.3",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "motion": "^12.37.0"
     "supabase": "^2.89.1"
   },
   "devDependencies": {
