@@ -50,7 +50,7 @@ export default function Home() {
   const handleCheckOrder = () => {
     if (dataset) {
       const correctCount = shuffledItems.reduce((count, item, index) => {
-        return item.order === dataset.items[index].order ? count + 1 : count;
+        return item.name === dataset.items[index].name ? count + 1 : count;
       }, 0);
 
       if (correctCount === dataset.items.length) {
@@ -125,7 +125,7 @@ export default function Home() {
       >
         {shuffledItems.map((item) => (
           <Reorder.Item
-            key={item.name}
+            key={item.order}
             value={item}
             as="div"
             style={{ position: 'relative' }}
