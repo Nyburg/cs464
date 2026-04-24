@@ -8,46 +8,62 @@ import {
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import { Reorder } from 'motion/react';
 
-// sample data
-import birds from '../../data/bird_population.json';
-import fish from '../../data/fish.json';
-import planets from '../../data/planets.json';
-
-import { Dataset, DatasetItem } from '@/types/data';
+import { Dataset, DatasetItem, DatasetMeta } from '@/types/data';
 
 export default function Home() {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const datasets: Dataset[] = [birds, fish, planets]
-  const { title, description, items } = datasets[selectedIndex];
+  const [dataset, setDataset] = useState<Dataset | null>(null)
+  // const { title, description, items } = datasets[selectedIndex];
 
   const [shuffledItems, setShuffledItems] = useState<DatasetItem[]>([]);
   const [isDragging, setIsDragging] = useState(false);
+  const [datasetMeta, setDatasetMeta] = useState<DatasetMeta[]>([])
   const [feedback, setFeedback] = useState<{
     severity: 'success' | 'info',
     message: string
   } | null>(null);
 
   useEffect(() => {
-    const shuffled = [...items].sort(() => Math.random() - 0.5);
-    setShuffledItems(shuffled);
-    setFeedback(null);
-  }, [items]);
+    fetch("/api/titles")
+      .then((r: Response) => r.json())
+      .then((data: DatasetMeta[]) => setDatasetMeta(data))
+  }, [])
+
+  useEffect(() => {
+    if (dataset) {
+      const shuffled = [...dataset.items].sort(() => Math.random() - 0.5);
+      setShuffledItems(shuffled);
+      setFeedback(null);
+    }
+
+  }, [dataset]);
+
+  useEffect(() => {
+    if (datasetMeta.length > selectedIndex){
+    fetch(`/api/data?name=${datasetMeta[selectedIndex].dataset_slug}`)
+      .then((r: Response) => r.json())
+      .then((data: Dataset) => setDataset(data))
+    }
+
+  }, [selectedIndex, datasetMeta])
 
   const handleCheckOrder = () => {
-    const correctCount = shuffledItems.reduce((count, item, index) => {
-      return item.order === items[index].order ? count + 1 : count;
-    }, 0);
+    if (dataset) {
+      const correctCount = shuffledItems.reduce((count, item, index) => {
+        return item.order === dataset.items[index].order ? count + 1 : count;
+      }, 0);
 
-    if (correctCount === items.length) {
-      setFeedback({
-        severity: 'success',
-        message: 'Correct! You solved the puzzle.'
-      });
-    } else {
-      setFeedback({
-        severity: 'info',
-        message: `${correctCount} of ${items.length} items are in the correct position.`
-      });
+      if (correctCount === dataset.items.length) {
+        setFeedback({
+          severity: 'success',
+          message: 'Correct! You solved the puzzle.'
+        });
+      } else {
+        setFeedback({
+          severity: 'info',
+          message: `${correctCount} of ${dataset.items.length} items are in the correct position.`
+        });
+      }
     }
   };
 
@@ -67,7 +83,7 @@ export default function Home() {
           label="Select a dataset"
           onChange={(e) => setSelectedIndex(Number(e.target.value))}
         >
-          {datasets.map((ds, i) => (
+          {datasetMeta.map((ds, i) => (
             <MenuItem key={i} value={i}>{ds.title}</MenuItem>
           ))}
         </Select>
@@ -86,10 +102,19 @@ export default function Home() {
       </Box>
 
       {/* Title & description from the JSON */}
-      <Typography variant="h4" gutterBottom>{title}</Typography>
-      <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-        {description}
-      </Typography>
+      {
+        dataset ?
+          <>
+            <Typography variant="h4" gutterBottom>{dataset.title}</Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+              {dataset.description}
+            </Typography>
+          </>
+
+          :
+          <h3> loading... </h3>
+      }
+
 
       {/* Item cards */}
       <Reorder.Group
@@ -109,7 +134,7 @@ export default function Home() {
           >
             <Card variant="outlined" sx={{ cursor: isDragging ? 'grabbing' : 'grab' }}>
               <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2, py: '12px !important' }}>
-                <DragHandleIcon color="action"/>
+                <DragHandleIcon color="action" />
                 <Typography variant="body1">{item.name}</Typography>
               </CardContent>
             </Card>
