@@ -22,7 +22,7 @@ export default function Home() {
     severity: 'success' | 'info',
     message: string
   } | null>(null);
-  const [itemStatus,setItemStatus] = useState<Record<number, 'correct' | 'wrong' >> ({});
+  const [itemStatus,setItemStatus] = useState<Record<number, 'correct' | 'close' | 'wrong' >> ({});
 
   useEffect(() => {
     fetch("/api/titles")
@@ -51,11 +51,22 @@ export default function Home() {
 
   const handleCheckOrder = () => {
     if (dataset) {
-      const newItemStatus: Record<number, 'correct' | 'wrong'> = {};
+      const newItemStatus: Record<number, 'correct' | 'close' | 'wrong'> = {};
       const correctCount = shuffledItems.reduce((count, item, index) => {
-        const isCorrect = item.order === dataset.items[index].order;
-        newItemStatus[item.order] = isCorrect ? 'correct' : 'wrong';
-        return isCorrect ? count + 1 : count;
+        const distance = Math.abs(item.order - dataset.items[index].order);
+
+        if (distance === 0) {
+          newItemStatus[item.order] = 'correct';
+          return count + 1;
+        }
+
+        if (distance === 1) {
+          newItemStatus[item.order] = 'close';
+          return count;
+        }
+
+        newItemStatus[item.order] = 'wrong';
+        return count;
       }, 0);
 
       setItemStatus(newItemStatus);
@@ -87,6 +98,13 @@ export default function Home() {
       return {
         bgcolor: '#e8f5e9',
         borderColor: '#4caf50'
+      };
+    }
+
+    if (status === 'close') {
+      return {
+        bgcolor: '#fff8e1',
+        bordercolor: '#fbc02d'
       };
     }
 
