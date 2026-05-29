@@ -33,8 +33,8 @@ export async function updateSession(request: NextRequest) {
   // with the Supabase client, your users may be randomly logged out.
   const { data } = await supabase.auth.getClaims()
   
-  const user = data?.claims
-
+  // Example of how to use the session to protect a route via proxy middleware.
+  //const user = data?.claims
   // if (
   //   // Require users to be logged in
   //   !user &&
