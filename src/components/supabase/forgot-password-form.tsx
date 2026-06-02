@@ -37,7 +37,16 @@ export function ForgotPasswordForm({
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }} className={className} {...props}>
       {success ? (
-        <Card>
+        <Card
+          elevation={0}
+          sx={{
+            borderRadius: 3,
+            border: 1,
+            borderColor: "divider",
+            boxShadow: "0 12px 32px rgba(15, 23, 42, 0.08)",
+            overflow: "hidden",
+          }}
+        >
           <CardHeader
             title={<Typography variant="h5" component="h1" sx={{ fontWeight: 700 }}>Check Your Email</Typography>}
             subheader="Password reset instructions sent"
@@ -49,7 +58,16 @@ export function ForgotPasswordForm({
           </CardContent>
         </Card>
       ) : (
-        <Card>
+        <Card
+          elevation={0}
+          sx={{
+            borderRadius: 3,
+            border: 1,
+            borderColor: "divider",
+            boxShadow: "0 12px 32px rgba(15, 23, 42, 0.08)",
+            overflow: "hidden",
+          }}
+        >
           <CardHeader
             title={<Typography variant="h5" component="h1" sx={{ fontWeight: 700 }}>Reset Your Password</Typography>}
             subheader="Type in your email and we'll send you a link to reset your password"

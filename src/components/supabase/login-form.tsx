@@ -38,7 +38,16 @@ export function LoginForm({
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }} className={className} {...props}>
-      <Card>
+      <Card
+        elevation={0}
+        sx={{
+          borderRadius: 3,
+          border: 1,
+          borderColor: "divider",
+          boxShadow: "0 12px 32px rgba(15, 23, 42, 0.08)",
+          overflow: "hidden",
+        }}
+      >
         <CardHeader
           title={<Typography variant="h5" component="h1" sx={{ fontWeight: 700 }}>Login</Typography>}
           subheader="Enter your email below to login to your account"
