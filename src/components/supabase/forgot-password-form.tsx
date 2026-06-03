@@ -69,7 +69,8 @@ export function ForgotPasswordForm({
           }}
         >
           <CardHeader
-            title={<Typography variant="h5" component="h1" sx={{ fontWeight: 700 }}>Reset Your Password</Typography>}
+            sx={{pb: 1, textAlign: "center",}}
+            title={<Typography variant="h5" component="h1" sx={{ fontWeight: 800, letterSpacing: "-0.02em" }}> Reset Your Password </Typography>}
             subheader="Type in your email and we'll send you a link to reset your password"
           />
           <CardContent>

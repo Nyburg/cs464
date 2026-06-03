@@ -44,8 +44,9 @@ export function UpdatePasswordForm({
         }}
       >
         <CardHeader
-          title={<Typography variant="h5" component="h1" sx={{ fontWeight: 700 }}>Reset Your Password</Typography>}
-          subheader="Please enter your new password below."
+          sx={{pb: 1, textAlign: "center",}}
+          title={<Typography variant="h5" component="h1" sx={{ fontWeight: 800, letterSpacing: "-0.02em" }}> Update Your Password </Typography>}
+          subheader="Enter a new password below to update your account"
         />
         <CardContent>
           <Stack component="form" spacing={2.5} onSubmit={handleForgotPassword}>

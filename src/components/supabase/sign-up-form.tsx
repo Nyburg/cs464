@@ -59,8 +59,9 @@ export function SignUpForm({
         }}
       >
         <CardHeader
-          title={<Typography variant="h5" component="h1" sx={{ fontWeight: 700 }}>Sign up</Typography>}
-          subheader="Create a new account"
+          sx={{pb: 1, textAlign: "center",}}
+          title={<Typography variant="h5" component="h1" sx={{ fontWeight: 800, letterSpacing: "-0.02em" }}> Sign Up </Typography>}
+          subheader="Enter your email below to create your account"
         />
         <CardContent>
           <Stack component="form" spacing={2.5} onSubmit={handleSignUp}>

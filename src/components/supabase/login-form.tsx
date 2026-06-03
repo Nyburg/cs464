@@ -49,8 +49,9 @@ export function LoginForm({
         }}
       >
         <CardHeader
-          title={<Typography variant="h5" component="h1" sx={{ fontWeight: 700 }}>Login</Typography>}
-          subheader="Enter your email below to login to your account"
+          sx={{pb: 1, textAlign: "center",}}
+          title={<Typography variant="h5" component="h1" sx={{ fontWeight: 800, letterSpacing: "-0.02em" }}> Login </Typography>}
+          subheader="Enter your email below to log in to your account"
         />
         <CardContent>
           <Stack component="form" spacing={2.5} onSubmit={handleLogin}>
