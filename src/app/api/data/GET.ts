@@ -4,17 +4,25 @@ import { getSupabaseClient } from '@/lib/supabase'
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const name = searchParams.get('name')
+    // Extract optional user ID query parameter (supports camelCase or snake_case)
+    const userId = searchParams.get('userId') || searchParams.get('user_id')
 
     try {
         const supabase = await getSupabaseClient()
 
         // query param containing name -> return specified dataset
         if (name) {
-            const { data: datasetData, error: datasetError } = await supabase
+            let query = supabase
                 .from('datasets')
                 .select('id, dataset_slug, title, description')
                 .eq('dataset_slug', name)
-                .single()
+
+            // Apply filter if userId is provided
+            if (userId) {
+                query = query.eq('user_id', userId)
+            }
+
+            const { data: datasetData, error: datasetError } = await query.single()
 
             const dataset = datasetData as Dataset | null
 
@@ -47,11 +55,17 @@ export async function GET(request: Request) {
             return Response.json(dataFile)
         }
 
-        // no query param -> return all datasets
-        const { data: datasetsData, error: datasetsError } = await supabase
+        // no query param for name -> return all datasets (with optional userId filter)
+        let datasetsQuery = supabase
             .from('datasets')
             .select('id, dataset_slug, title, description')
-            .order('dataset_slug', { ascending: true })
+
+        // Apply filter if userId is provided
+        if (userId) {
+            datasetsQuery = datasetsQuery.eq('user_id', userId)
+        }
+
+        const { data: datasetsData, error: datasetsError } = await datasetsQuery.order('dataset_slug', { ascending: true })
 
         const datasets = (datasetsData || []) as Dataset[]
 
