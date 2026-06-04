@@ -1,7 +1,8 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import DatasetForm, { DatasetFormValues } from "@/components/DatasetForm";
+import DatasetForm from '@/components/dataset-form/DatasetForm';
+import { DatasetFormValues } from '@/components/dataset-form/DatasetFormTypes';
 
 function slugify(title: string): string {
   return title

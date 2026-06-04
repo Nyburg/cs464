@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Box, Typography, Alert } from '@mui/material';
 import { Dataset } from '@/types/data';
-import DatasetForm, { DatasetFormValues } from '@/components/DatasetForm';
+import DatasetForm from '@/components/dataset-form/DatasetForm';
+import { DatasetFormValues } from '@/components/dataset-form/DatasetFormTypes';
 
 function slugify(title: string): string {
   return title
@@ -155,6 +156,7 @@ export default function UpdateDatasetPage() {
 
   return (
     <DatasetForm
+      key={slug}
       initialTitle={dataset.title}
       initialDescription={dataset.description || ''}
       initialItems={dataset.items.map(item => item.name)}
