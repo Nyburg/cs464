@@ -6,6 +6,7 @@ export async function GET(request: Request) {
     const name = searchParams.get('name')
     // Extract optional user ID query parameter (supports camelCase or snake_case)
     const userId = searchParams.get('userId') || searchParams.get('user_id')
+    console.log(userId)
 
     try {
         const supabase = await getSupabaseClient()
@@ -19,7 +20,7 @@ export async function GET(request: Request) {
 
             // Apply filter if userId is provided
             if (userId) {
-                query = query.eq('user_id', userId)
+                query = query.eq('owner_id', userId)
             }
 
             const { data: datasetData, error: datasetError } = await query.single()
@@ -62,7 +63,7 @@ export async function GET(request: Request) {
 
         // Apply filter if userId is provided
         if (userId) {
-            datasetsQuery = datasetsQuery.eq('user_id', userId)
+            datasetsQuery = datasetsQuery.eq('owner_id', userId)
         }
 
         const { data: datasetsData, error: datasetsError } = await datasetsQuery.order('dataset_slug', { ascending: true })
