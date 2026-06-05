@@ -33,6 +33,25 @@ git checkout -b assignment1/issue3
 
 Work on your assignment and complete the requirements of the issue.
 
+### Testing
+
+All pull requests must include tests for any new or modified behaviour. PRs without adequate test coverage will not be merged.
+
+See [TESTING.md](./TESTING.md) for full documentation on the test suite, including how to run tests, how to write API route, component, and end-to-end tests, and how to mock Supabase and `fetch`.
+
+### Requirements
+
+- New API routes must have unit tests covering at minimum: a valid request, an invalid/missing field, and any error cases (conflicts, database errors).
+- New or modified components must have unit tests covering any user interactions or validation logic.
+- Significant new user-facing flows must have a Playwright end-to-end test covering the happy path.
+- All tests must pass before opening a PR. Run the full check suite locally first:
+
+```bash
+npm run check
+```
+
+This runs type checking, linting, unit tests, and end-to-end tests in sequence. If any step fails, fix it before submitting.
+
 ---
 
 ## Step 3: Stage and Commit Your Changes
